@@ -1,6 +1,8 @@
 class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
+  before_filter :authenticate_user!,:only => [:new,:create,:destroy,:edit]
+
   def index
     @items = Item.all
     
