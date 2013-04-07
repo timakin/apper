@@ -1,2 +1,5 @@
-CarrerWave File Uploading
+CarrerWave File Uploading<br>
 http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads
+Devise
+<br>
+http://kitbc.s41.xrea.com/main/?use_devise
