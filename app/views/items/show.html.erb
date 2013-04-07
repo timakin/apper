@@ -4,7 +4,10 @@
   <b>Title:</b>
   <%= @item.title %>
 </p>
-
+<p>
+	<b>Image</b>
+	<%= image_tag @item.image_url.to_s %>
+</p>
 <p>
   <b>Text:</b>
   <%= @item.text %>
