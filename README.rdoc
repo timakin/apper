@@ -1,4 +1,4 @@
-CarrerWave File Uploading  
+* CarrerWave File Uploading  
 http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads
-Devise  
+* Devise 導入
 http://kitbc.s41.xrea.com/main/?use_devise
