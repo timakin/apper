@@ -2,3 +2,11 @@
 http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads
 * Devise 導入
 http://kitbc.s41.xrea.com/main/?use_devise
+* リレーション
+itemモデルに参照元となるuser_idを追加
+rails g migration add_user_id_to_items
+
+そのあとフォームを利用してuser_idを自動で登録するようにする。
+  <div class="field">
+    <%= f.hidden_field :user_id, :value => current_user.id %>  
+  </div>
