@@ -5,7 +5,8 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.all
-    
+    @users = User.all
+    @user2 = User.find(2)
 
     respond_to do |format|
       format.html # index.html.erb

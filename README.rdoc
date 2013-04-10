@@ -13,3 +13,9 @@ rails g migration add_user_id_to_items
   <div class="field">
     <%= f.hidden_field :user_id, :value => current_user.id %>  
   </div>
+
+http://neec-is.g.hatena.ne.jp/is178/20091206/1260069121
+を見て、試しにEmailアドレスを表示する。
+    <td><%= item.user.email %></td>
+これをindex.html.erbに追加。
+Userテーブルにnameでも追加すれば、簡単に表示ができる。
