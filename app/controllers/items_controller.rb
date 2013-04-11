@@ -4,9 +4,11 @@ class ItemsController < ApplicationController
   before_filter :authenticate_user!,:only => [:new,:create,:destroy,:edit]
 
   def index
-    @items = Item.all
-    @users = User.all
-    @user2 = User.find(2)
+    if params[:tag]
+      @items = Item.tagged_with(params[:tag])
+    else
+      @items = Item.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb

@@ -50,3 +50,9 @@ Mini_magick該当箇所のコメントアウトを外す
 のように、versionごとに分けて記載する。
 
 そのあと、viewのitemでthumbならindexのimage_tagの末尾に(:thumb)をつけるなど、各場合についてversionを適用する。
+
+* acts_as_taggable_on
+
+http://railscasts.com/episodes/382-tagging?language=ja&view=asciicast
+をまんま使えば大丈夫。
+mapはタイトル検索などで使い分けないといけないかも
