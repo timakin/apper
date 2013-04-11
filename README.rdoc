@@ -30,7 +30,10 @@ Userテーブルにnameでも追加すれば、簡単に表示ができる。
 
 http://railsgirls-jp.github.io/thumbnails/
 
-app/uploaders/image_uploader.rbのMini_magick該当箇所のコメントアウトを外す
+Mini_magick該当箇所のコメントアウトを外す
+
+```app/uploaders/image_uploader.rb
+	
 
 
 	version :thumb do
@@ -42,6 +45,7 @@ app/uploaders/image_uploader.rbのMini_magick該当箇所のコメントアウ�
 	  process :resize_to_fill => [300,250]
 	end
 
+```
 
 のように、versionごとに分けて記載する。
 
