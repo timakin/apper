@@ -28,14 +28,21 @@ Userテーブルにnameでも追加すれば、簡単に表示ができる。
 
 * Mini_magickでページごとに画像調整
 
+http://railsgirls-jp.github.io/thumbnails/
+
 app/uploaders/image_uploader.rbのMini_magick該当箇所のコメントアウトを外す
+
 
 version :thumb do
   process :resize_to_fill => [200,200]
 end
+
+
 version :show do
   process :resize_to_fill => [300,250]
 end
+
+
 のように、versionごとに分けて記載する。
 
 そのあと、viewのitemでthumbならindexのimage_tagの末尾に(:thumb)をつけるなど、各場合についてversionを適用する。
