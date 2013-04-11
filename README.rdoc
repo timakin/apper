@@ -1,13 +1,19 @@
+* 前提条件
+Userテーブル=>Devise
+Itemテーブル=>記事を作成する。title:string text:textでscaffold
+
+
 * CarrerWave File Uploading  
 http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads
+ほぼまんまでいけるimageカラムをitemテーブルに追加。
+
 * Devise 導入
 http://kitbc.s41.xrea.com/main/?use_devise
+
 * リレーション
 itemモデルに参照元となるuser_idを追加
 
-'''
 rails g migration add_user_id_to_items
-'''
 
 そのあとフォームを利用してuser_idを自動で登録するようにする。
   <div class="field">
@@ -19,3 +25,17 @@ http://neec-is.g.hatena.ne.jp/is178/20091206/1260069121
     <td><%= item.user.email %></td>
 これをindex.html.erbに追加。
 Userテーブルにnameでも追加すれば、簡単に表示ができる。
+
+* Mini_magickでページごとに画像調整
+
+app/uploaders/image_uploader.rbのMini_magick該当箇所のコメントアウトを外す
+
+version :thumb do
+  process :resize_to_fill => [200,200]
+end
+version :show do
+  process :resize_to_fill => [300,250]
+end
+のように、versionごとに分けて記載する。
+
+そのあと、viewのitemでthumbならindexのimage_tagの末尾に(:thumb)をつけるなど、各場合についてversionを適用する。
