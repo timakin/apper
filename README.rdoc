@@ -1,16 +1,16 @@
-* 前提条件
+= 前提条件
 Userテーブル=>Devise
 Itemテーブル=>記事を作成する。title:string text:textでscaffold
 
 
-* CarrerWave File Uploading  
+= CarrerWave File Uploading  
 ASCIICASTS[http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads]
 ほぼまんまでいけるimageカラムをitemテーブルに追加。
 
-* Devise 導入
+= Devise 導入
 これ[http://kitbc.s41.xrea.com/main/?use_devise]にそってやる。
 
-* リレーション
+= リレーション
 itemモデルに参照元となるuser_idを追加
 
 	rails g migration add_user_id_to_items
@@ -28,7 +28,7 @@ itemモデルに参照元となるuser_idを追加
 これをindex.html.erbに追加。
 Userテーブルにnameでも追加すれば、簡単に表示ができる。
 
-* Mini_magickでページごとに画像調整
+= Mini_magickでページごとに画像調整
 
 RailsGirls[http://railsgirls-jp.github.io/thumbnails/]に載っている。
 
@@ -53,13 +53,13 @@ app/uploaders/image_uploader.rb
 
 そのあと、viewのitemでthumbならindexのimage_tagの末尾に(:thumb)をつけるなど、各場合についてversionを適用する。
 
-* acts_as_taggable_on
+= acts_as_taggable_on
 
 ASCIICASTS[http://railscasts.com/episodes/382-tagging?language=ja&view=asciicast]
 をまんま使えば大丈夫。
 mapはタイトル検索などで使い分けないといけないかも
 
-* bootstrap
+= bootstrap
 
 application.js,application.cssにrequireを書く
 navbarはnavbar-fixed-topにすると、ウィンドウを小さくしても
