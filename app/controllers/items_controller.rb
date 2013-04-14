@@ -6,8 +6,10 @@ class ItemsController < ApplicationController
   def index
     if params[:tag]
       @items = Item.tagged_with(params[:tag])
+      @items = @items.sort_by{ |m| m.created_at}.reverse()
     else
       @items = Item.all
+      @items = @items.sort_by{ |m| m.created_at}.reverse()
     end
 
     respond_to do |format|

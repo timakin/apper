@@ -80,3 +80,18 @@ flat-uiとかも適用できる！やったね！
 
 itemってとこが重要。
 このやり方で他のページもできるよ。
+
+= created_atが新しい順に表示する
+
+こちら[https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-talk/gANZDdb8u5s]を参考にする。
+例えば
+
+  if params[:tag]
+    @items = Item.tagged_with(params[:tag])
+    @items = @items.sort_by{ |m| m.created_at}.reverse()
+  else
+    @items = Item.all
+    @items = @items.sort_by{ |m| m.created_at}.reverse()
+  end
+
+indexならこんな感じ
