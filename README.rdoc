@@ -59,9 +59,9 @@ navbarはnavbar-fixed-topにすると、ウィンドウを小さくしても
 
 root_pathやdestroy_user_session_pathなどは、liタグの次に書く
 
-	<% if user_signed_in? %>
-		...
-	<% end %>
+  <% if user_signed_in? %>
+    ...
+  <% end %>
 
 でnavbarの表示を変える
 
