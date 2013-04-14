@@ -18,6 +18,7 @@ group :assets do
   gem 'bourbon'
   gem 'bootstrap-sass'
   gem 'rails-backbone'
+  gem "flat-ui-rails"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby

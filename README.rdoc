@@ -11,7 +11,7 @@ ASCIICASTS[http://ja.asciicasts.com/episodes/253-carrierwave-file-uploads]
 これ[http://kitbc.s41.xrea.com/main/?use_devise]にそってやる。
 
 = リレーション
-itemモデルに参照元となるuser_idを追加
+itemモデルに参照元となるuser_idを追加（これ忘れたら作れない。案外これ載っていない。）
 	rails g migration add_user_id_to_items
 
 そのあとフォームを利用してuser_idを自動で登録するようにする。
@@ -37,6 +37,7 @@ app/uploaders/image_uploader.rb
 	end
 
 
+
 	version :show do
 	  process :resize_to_fill => [300,250]
 	end
@@ -58,4 +59,23 @@ navbarはnavbar-fixed-topにすると、ウィンドウを小さくしても
 余白が生まれたりしない。
 
 root_pathやdestroy_user_session_pathなどは、liタグの次に書く
-if user_signed_in?でnavbarの表示を変える
+
+	<% if user_signed_in? %>
+		...
+	<% end %>
+
+でnavbarの表示を変える
+
+flat-uiとかも適用できる！やったね！
+
+= サムネイルにリンクはる
+
+こちら[http://d.hatena.ne.jp/satake7/20080908/p1]を参考にする
+
+= 投稿したユーザーのみdestroyとかeditとか表示する
+
+	<% if current_user == item.user %>
+		...
+	<% end %>
+
+itemってとこが重要。
