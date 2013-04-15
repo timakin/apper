@@ -1,5 +1,5 @@
 Apper::Application.routes.draw do
-  get "home/index"
+  # get "home/index"
   get "tags/:tag", to: 'items#index', as: :tag
   devise_for :users
   resources :items

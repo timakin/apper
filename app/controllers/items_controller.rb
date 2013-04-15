@@ -88,4 +88,7 @@ class ItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def follow
+  end
 end
