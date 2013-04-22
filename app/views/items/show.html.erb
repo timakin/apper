@@ -4,6 +4,13 @@
   <b>User_id:</b>
   <%= @item.user_id %>
 </p>
+<% unless current_user==@item.user %>
+      <% if current_user.following?(@item.user) %>
+        <%= link_to "Remove", user_unfollow_item_path %>
+      <% else %>
+        <%= link_to "Add Friend", user_follow_item_path %>
+      <% end %>
+<% end %>
 <p>
   <b>Tags:</b>
   <%= @item.tag_list %>
@@ -19,6 +26,12 @@
 <p>
   <b>Text:</b>
   <%= @item.text %>
+</p>
+
+<p>
+  <% @following.each do |f| %>
+  <b><%= f.email %></b><br />
+  <% end %>
 </p>
 
 <% if current_user==@item.user %>

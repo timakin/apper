@@ -22,8 +22,9 @@ class ItemsController < ApplicationController
   # GET /items/1.json
   def show
     @item = Item.find(params[:id])
+    @following = current_user.following
 
-    respond_to do |format|
+   respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @item }
     end
@@ -89,6 +90,21 @@ class ItemsController < ApplicationController
     end
   end
 
-  def follow
+  def user_follow
+    @item = Item.find(params[:id])
+    current_user.follow(@item.user)
+    respond_to do |format|
+      format.html { redirect_to item_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def user_unfollow
+    @item = Item.find(params[:id])
+    current_user.unfollow(@item.user)
+    respond_to do |format|
+      format.html { redirect_to item_url }
+      format.json { head :no_content }
+    end
   end
 end

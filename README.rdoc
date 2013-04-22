@@ -94,3 +94,89 @@ itemってとこが重要。
   end
 
 indexならこんな感じ
+
+= party_boyでフォロー機能
+
+微妙に難しかった
+こちら[http://tnakamura.hatenablog.com/entry/20120703/party_boy]
+
+  rails generate party_boy
+
+マイグレーションファイルの名前のせいでエラーが出るから
+
+  class CreateRelationship
+    ...
+  end
+
+にする。詳細はこちら[https://github.com/mnelson/party_boy/issues/6]
+これを修正したら、
+
+  rake db:migrate
+
+こうしてリレーションに必要なテーブルが作成される。
+けど、アクセスできない変数があるので、relationshipモデルに
+
+  attr_accessible :requestor, :requestee, :restricted
+
+と記載する。こうする事でほぼ使えるようになる。
+こっからが面倒。まずUserモデルに
+
+  acts_as_followable
+
+を追加。
+その後コントローラー、ルーティング、ビューの順に編集していく。
+まずコントローラー。フォロー追加、解除のアクションを追加する。
+
+  def user_follow
+    @item = Item.find(params[:id])
+    current_user.follow(@item.user)
+    # これはscaffoldのやつと同じで、item_urlにリダイレクトするようになっている。
+    respond_to do |format|
+      format.html { redirect_to item_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def user_unfollow
+    @item = Item.find(params[:id])
+    current_user.unfollow(@item.user)
+    respond_to do |format|
+      format.html { redirect_to item_url }
+      format.json { head :no_content }
+    end
+  end
+
+次にルーティング。アクションがあったときのpathをitemsのルートに追加する。
+
+  resources :items do
+    member do
+      get "user_follow"
+      get "user_unfollow"
+    end
+  end
+
+最後にビュー。これが鬼門だった……ルーティングを確認してから、以下を追加した。
+
+  <% unless current_user==@item.user %>
+    <% if current_user.following?(@item.user) %>
+      <%= link_to "Remove", user_unfollow_item_path %>
+    <% else %>
+      <%= link_to "Add Friend", user_follow_item_path %>
+    <% end %>
+  <% end %>
+
+これでおっけー。ついでにフォロワーを表示するには、
+
+  @following = current_user.following
+
+をコントローラーに追加した後、ビューに以下を追加すれば良い。
+
+  <p>
+    <% @following.each do |f| %>
+    <b><%= f.email %></b><br />
+    <% end %>
+  </p>
+
+= sextant
+
+もうrake routesなんていらない。Rail4.0だと標準装備らしい。3.2でも見れる。便利でいいね。
