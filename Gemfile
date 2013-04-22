@@ -46,6 +46,7 @@ group :development do
   gem "rails-erd"
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'sextant'
 end
 
 gem 'carrierwave'
@@ -61,4 +62,5 @@ gem 'rspec-rails'
 gem 'pry-rails'
 gem 'rails_config'
 gem 'cancan'
+gem 'party_boy'
 
