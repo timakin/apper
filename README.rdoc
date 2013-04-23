@@ -180,3 +180,43 @@ indexならこんな感じ
 = sextant
 
 もうrake routesなんていらない。Rail4.0だと標準装備らしい。3.2でも見れる。便利でいいね。
+
+= ログイン、ログアウトの表示を変更する
+
+まあ簡単
+
+  <% if user_signed_in? %>
+  <ul class="nav pull-right">
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <%= current_user.email %>
+      <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+       <li><a href="">Google+に参加</a></li>
+       <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete %></li>
+       <li><a href="">アカウント設定</a></li>
+       <li class="divider"></li>
+       <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete %></li>
+      </ul>
+    </li>
+  </ul>
+  <% else %>
+    <ul class="nav pull-right">
+    <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    test
+    <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+    <li><a href="">Google+に参加</a></li>
+    <li><a href="">プライバシー</a></li>
+    <li><a href="">アカウント設定</a></li>
+    <li class="divider"></li>
+    <li><%= link_to "ログイン", new_user_session_path %></li>
+    </ul>
+    </li>
+    </ul>
+  <% end %>
+
+  
