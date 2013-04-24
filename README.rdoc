@@ -219,4 +219,33 @@ indexならこんな感じ
     </ul>
   <% end %>
 
+
+= Ransack
+
+目が飛ぶくらい簡単
+こちら[http://railscasts.com/episodes/370-ransack?language=ja&view=asciicast]を参考に！
+items_controllerのindexに書く。
+（今回はtagとの兼用の仕方がわからないので、とりあえずtagの機能をコメントアウト）
+
+  #if params[:q][:tag]
+  #  @items = Item.tagged_with(params[:q][:tag])
+  #  @items = @items.sort_by{ |m| m.created_at}.reverse()
+  #else
+
+  @search=Item.search(params[:q])
+  @items=@search.result
+  @items = @items.sort_by{ |m| m.created_at}.reverse()
+
+  #end
+
+indexには検索フォームを作る
+
+  <%= search_form_for @search do |f| %>
+    <div class="field">
+      <%= f.label :title_cont, "Title" %>
+      <%= f.text_field :title_cont %>
+    </div>
+    <div class="actions"><%= f.submit "Search" %></div>
+  <% end %>
+
   

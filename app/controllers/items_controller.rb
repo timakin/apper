@@ -4,13 +4,18 @@ class ItemsController < ApplicationController
   before_filter :authenticate_user!,:only => [:show,:new,:create,:destroy,:edit]
 
   def index
-    if params[:tag]
-      @items = Item.tagged_with(params[:tag])
+
+    #if params[:q][:tag]
+    #  @items = Item.tagged_with(params[:q][:tag])
+    #  @items = @items.sort_by{ |m| m.created_at}.reverse()
+    #else
+      @search=Item.search(params[:q])
+      @items=@search.result
       @items = @items.sort_by{ |m| m.created_at}.reverse()
-    else
-      @items = Item.all
-      @items = @items.sort_by{ |m| m.created_at}.reverse()
-    end
+    #end
+
+
+
 
     respond_to do |format|
       format.html # index.html.erb
