@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
 
   include ActsAsCommentable::Comment
-  attr_accessible :comment, :commentable_id, :commentable_type
+  attr_accessible :comment, :commentable_id, :commentable_type, :user_id
   belongs_to :commentable, :polymorphic => true
 
   default_scope -> { order('created_at ASC') }

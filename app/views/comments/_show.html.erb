@@ -8,6 +8,8 @@
   <tr>
      <td><%= comment.comment %> </td>
      <td><%= comment.created_at %></td>
+     <td><%= comment.user_id %></td>
+     <td><%= comment.user.email %></td>
   </tr>
 </div>
 <% end %>

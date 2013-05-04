@@ -30,7 +30,7 @@ class ItemsController < ApplicationController
     @following = current_user.following
     @comment = @item.comments.build
     @item.comments.pop
-
+    
    respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @item }

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
 
   has_many :items
+  has_many :comments
 
   acts_as_followable
 end
