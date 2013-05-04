@@ -34,6 +34,16 @@
   <% end %>
 </p>
 
+<% if user_signed_in? %>
+<%= render 'comments/form' %>
+<% end %>
+
+<div class="comment_list">
+<%= render 'comments/show' %>
+</div>
+
+
+
 <% if current_user==@item.user %>
 <%= link_to 'Edit', edit_item_path(@item) %> |
 <%= link_to 'Back', items_path %>

@@ -1,0 +1,14 @@
+<table>
+  <tr>
+    <th>comment</th>
+  </tr>
+
+<% @item.comments.each do |comment| %>
+<div>
+  <tr>
+     <td><%= comment.comment %> </td>
+     <td><%= comment.created_at %></td>
+  </tr>
+</div>
+<% end %>
+</table>

@@ -248,4 +248,19 @@ indexには検索フォームを作る
     <div class="actions"><%= f.submit "Search" %></div>
   <% end %>
 
+
+= acts_as_commentable
+
+コメント機能をつける。今回はacts_as_commentableを使う。
+こちら[http://yorunocafe.blogspot.jp/2011/08/railsactsascommentable.html]を参照
+
+  rails g comment
+
+を忘れないように。
+なんかCommentsControllerにしなくちゃいけなかったり、命名規則の部分でミスが多いから、
+自分で直すように気をつけないといけない。
+あとコメントを表示するモデルの名前をpostから置き換えないと表示できないので注意。
+あと、_formと_showの二つを作ってファイルを分割した。
+まじで命名規則にそってない解説だから注意。
+
   

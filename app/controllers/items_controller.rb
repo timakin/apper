@@ -28,6 +28,8 @@ class ItemsController < ApplicationController
   def show
     @item = Item.find(params[:id])
     @following = current_user.following
+    @comment = @item.comments.build
+    @item.comments.pop
 
    respond_to do |format|
       format.html # show.html.erb

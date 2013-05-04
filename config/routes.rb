@@ -1,9 +1,12 @@
 Apper::Application.routes.draw do
+  get "comment/create"
+
   # get "home/index"
 #  match "items/:id/user_follow" => "items#user_follow"
 #  match "items/:id/user_unfollow" => "items#user_unfollow"
   get "tags/:tag", to: 'items#index', as: :tag
   devise_for :users
+  resources :comments, :only => [:create]
   resources :items do
     member do
       get "user_follow"
