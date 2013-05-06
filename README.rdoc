@@ -289,3 +289,15 @@ current_userがからんでくると絶対エラーが出る！
 
 を追記。ちゃんとpublic_activityのmodelをincludesなきゃいけない。
 あと、current_userについての記述は基本無視していい。
+最終的にviewはこんな感じになった。
+
+  <h1>Activities#index</h1>
+    <% @activities.each do |activity| %>
+      <div class="activity">
+    <% if activity.trackable_type == "Item" %>
+      <%= activity.owner.email if activity.owner %> made <%= link_to activity.trackable.title, activity.trackable %> 
+    <% else %>
+      <%= activity.owner.email if activity.owner %> added comment to <%= activity.trackable.user.email %> 
+    <% end %>
+      </div>
+    <% end %>
