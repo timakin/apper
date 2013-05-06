@@ -301,3 +301,12 @@ current_userがからんでくると絶対エラーが出る！
     <% end %>
       </div>
     <% end %>
+
+
+added comment to ...の部分を改良できないか？
+itemsテーブルとcommentsテーブルの間にリレーションを作り、trackされたcommentの要素の中にあるitem_idを使って、
+コメントしたitemのタイトルとそのリンク先を取得。ビューには次のように記載。
+
+  <%= activity.owner.email if activity.owner %> added comment to <%= link_to activity.trackable.item.title, activity.trackable.item %> 
+
+やったぜ。

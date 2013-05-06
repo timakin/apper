@@ -5,6 +5,7 @@
     <%= f.hidden_field :user_id, :value => current_user.id %>
     <%= f.hidden_field :commentable_id %>
     <%= f.hidden_field :commentable_type %>
+    <%= f.hidden_field :item_id, :value => (params[:id]) %>
  </div>
  <div class="actions">
     <%= f.submit :class=> "btn" %>

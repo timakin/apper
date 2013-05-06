@@ -4,7 +4,7 @@
     <% if activity.trackable_type == "Item" %>
       <%= activity.owner.email if activity.owner %> made <%= link_to activity.trackable.title, activity.trackable %> 
     <% else %>
-      <%= activity.owner.email if activity.owner %> added comment to <%= activity.trackable.user.email %> 
+      <%= activity.owner.email if activity.owner %> added comment to <%= link_to activity.trackable.item.title, activity.trackable.item %> 
     <% end %>
   </div>
 <% end %>
