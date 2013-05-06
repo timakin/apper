@@ -66,4 +66,5 @@ gem 'rails_config'
 gem 'cancan'
 gem 'party_boy'
 gem 'ransack'
+gem 'public_activity'
 

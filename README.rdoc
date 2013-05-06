@@ -268,4 +268,24 @@ userモデルとcommentモデルにリレーションを設定すれば、
 commentを作成したuserの名前やメールアドレスも表示できる。
 ただ、この設定をする以前にuser_idを持たないcommentを作成していると、エラーが出るので注意。
 
-  
+= Public_Activity
+
+こちら〜[http://railscasts.com/episodes/406-public-activity?view=asciicast]
+でもこのscreencastには、/app/config/activities_controller.rbとなっていたり（/app/controller/activities_controller.rbがほんと）、
+
+  class ActivitiesController < ApplicationController
+    def index
+      @activities = PublicActivity::Activity.order('created_ad DESC')
+    end
+  end
+
+が書かれていなかったり……
+これはdefault_scopeのオプションを参考にして、修正できた。うれしい(´；д；｀)
+current_userがからんでくると絶対エラーが出る！
+この野郎と思ったけど、/app/model/comment.rbには
+
+  include PublicActivity::Model
+  tracked owner: ->(controller, model) { controller && controller.current_user }
+
+を追記。ちゃんとpublic_activityのmodelをincludesなきゃいけない。
+あと、current_userについての記述は基本無視していい。

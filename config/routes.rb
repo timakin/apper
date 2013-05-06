@@ -1,4 +1,6 @@
 Apper::Application.routes.draw do
+  get "activities/index"
+
   get "comment/create"
 
   # get "home/index"
@@ -13,6 +15,7 @@ Apper::Application.routes.draw do
       get "user_unfollow"
     end
   end
+  resources :acrivities
 
 
 
