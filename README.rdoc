@@ -532,3 +532,16 @@ omniauth用のカラムをUserモデルに追加する。
   @following = current_user.following
 
 これでよし。
+
+= DBをMySQLに変更する。
+
+とりあえず
+
+  mysql.server start
+
+しないと、mysql.sockがないとかで小一時間しかられた。
+次にmysql -u root -pでパスワードを入力してmysqlに入る。
+これはPCと同じ。
+その後の内容はここ[http://www.oyabunn.com/wordpress/archives/60]を参照。
+めっちゃ見やすくなった。
+
