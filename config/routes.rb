@@ -7,7 +7,7 @@ Apper::Application.routes.draw do
 #  match "items/:id/user_follow" => "items#user_follow"
 #  match "items/:id/user_unfollow" => "items#user_unfollow"
   get "tags/:tag", to: 'items#index', as: :tag
-  devise_for :users
+#  devise_for :users
   resources :comments, :only => [:create]
   resources :items do
     member do
@@ -16,6 +16,13 @@ Apper::Application.routes.draw do
     end
   end
   resources :acrivities
+
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+ 
+  #devise_scope :user do
+  #  get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
+  #  get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+  #end
 
 
 

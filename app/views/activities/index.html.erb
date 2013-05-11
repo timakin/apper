@@ -1,10 +1,29 @@
 <h1>Activities#index</h1>
 <% @activities.each do |activity| %>
-  <div class="activity">
     <% if activity.trackable_type == "Item" %>
-      <%= activity.owner.email if activity.owner %> made <%= link_to activity.trackable.title, activity.trackable %> 
+      <% if activity.owner==current_user %>
+       <div class="activity">
+        You made <%= link_to activity.trackable.title, activity.trackable %>
+       </div>
+      <% elsif @following.include?(activity.owner) %>
+       <div class="activity">
+        <%= activity.owner.name %> made <%= link_to activity.trackable.title, activity.trackable %>
+       </div>
+      <% else %>
+      <% end %>
     <% else %>
-      <%= activity.owner.email if activity.owner %> added comment to <%= link_to activity.trackable.item.title, activity.trackable.item %> 
+      <% if activity.owner == current_user %>
+      <div class="activity">
+        You added comment to 
+        <%= link_to activity.trackable.item.title, activity.trackable.item %> 
+        </div>
+      <% elsif @following.include?(activity.owner) %>
+       <div class="activity">
+        <%= activity.owner.name %>
+         added comment to 
+        <%= link_to activity.trackable.item.title, activity.trackable.item %><br />
+       </div>
+      <% else %>
+      <% end %>
     <% end %>
-  </div>
 <% end %>

@@ -310,3 +310,225 @@ itemsテーブルとcommentsテーブルの間にリレーションを作り、t
   <%= activity.owner.email if activity.owner %> added comment to <%= link_to activity.trackable.item.title, activity.trackable.item %> 
 
 やったぜ。
+
+= OmniAuthでGoogle & Facebook認証 + Devise
+長い時間を要した……
+ここ[https://github.com/plataformatec/devise/wiki/OmniAuth%3A-Overview]が一番参考になった。
+
+まずはgemをインストール
+
+  gem 'omniauth'
+  gem "omniauth-facebook"
+  gem "omniauth-twitter"
+  gem 'omniauth-google-oauth2'
+
+omniauth用のカラムをUserモデルに追加する。
+
+  rake db:reset
+
+したあと、devise_create_users.rbというmigrationファイルを次のように書き換える。
+
+  class DeviseCreateUsers < ActiveRecord::Migration
+    def change
+      create_table(:users) do |t|
+        ## Database authenticatable
+        t.string :email,              :null => false, :default => ""
+        t.string :encrypted_password, :null => false, :default => ""  
+
+        ## Recoverable
+        t.string   :reset_password_token
+        t.datetime :reset_password_sent_at  
+
+        ## Rememberable
+        t.datetime :remember_created_at  
+
+        ## Trackable
+        t.integer  :sign_in_count, :default => 0
+        t.datetime :current_sign_in_at
+        t.datetime :last_sign_in_at
+        t.string   :current_sign_in_ip
+        t.string   :last_sign_in_ip  
+
+        ##Omniauthable
+        t.integer :uid, :limit => 8 #bigintにする
+        t.string :name
+        t.string :provider
+        t.string :password  
+
+        ## Confirmable
+        # t.string   :confirmation_token
+        # t.datetime :confirmed_at
+        # t.datetime :confirmation_sent_at
+        # t.string   :unconfirmed_email # Only if using reconfirmable  
+
+        ## Lockable
+        # t.integer  :failed_attempts, :default => 0 # Only if lock strategy is :failed_attempts
+        # t.string   :unlock_token # Only if unlock strategy is :email or :both
+        # t.datetime :locked_at  
+
+        ## Token authenticatable
+        # t.string :authentication_token  
+  
+
+        t.timestamps
+      end  
+
+      add_index :users, :email,                :unique => true
+      add_index :users, :reset_password_token, :unique => true
+      add_index :users, :uid,  :unique => true
+      # add_index :users, :confirmation_token,   :unique => true
+      # add_index :users, :unlock_token,         :unique => true
+      # add_index :users, :authentication_token, :unique => true
+    end
+  end
+
+これでもう一度
+
+  rake db:migrate
+
+する。次はこのmigrationに乗っ取ってmodels/user.rbを編集。
+
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :password, :uid, :provider
+  # attr_accessible :title, :body
+
+  validates :name, :presence => true, :uniqueness => true
+  validates :email, :presence => true, :uniqueness => true
+
+ちょっとよけいなのも入ってるけど、これでオッケー。
+
+
+次はconfigの設定。config/initializers/devise.rbを書き換える。というか追記する。
+
+  OpenSSL::SSL.module_eval{ remove_const(:VERIFY_PEER) }
+  OpenSSL::SSL.const_set( :VERIFY_PEER, OpenSSL::SSL::VERIFY_NONE )
+  config.omniauth :facebook, "APP_ID", "APP_SECRET",
+      {:scope => 'email, offline_access'} 
+  require "omniauth-facebook"
+  require "omniauth-google-oauth2"
+  config.omniauth :google_oauth2, "4APP_ID", "APP_SECRET", { access_type: "offline", approval_prompt: "" }
+
+上2行は必要。次にroutes.rbに下を追加。
+
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+ 
+ビューに次のリンクを追加。
+
+  <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %><br />
+
+  <%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+
+その後、もう一度models/user.rbに次を追加。
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"]
+        user.name = data["name"]
+      end
+    end
+  end
+
+
+  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+    data = access_token.extra.raw_info
+    if user = User.where(:email => data.email).first
+      user
+    else # Create a user with a stub password.
+      User.create!(:email => data.email, :name => data.name, :password => Devise.friendly_token[0,20], :provider => access_token.provider, :uid => access_token.uid)
+    end
+  end
+
+  def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
+    data = access_token.info
+    if user = User.where(:email => data.email).first
+      user
+    else # Create a user with a stub password.
+      User.create!(:email => data.email, :name => data.name, :password => Devise.friendly_token[0,20], :provider => access_token.provider, :uid => access_token.uid)
+    end
+  end
+
+これで最初登録したときにどんな情報が登録されるのかを設定できた。
+最後にapp/controllers/users/omniauth_callbacks_controller.rbというファイルを、ディレクトリごと作成。
+以下がその内容となる。
+  
+  class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+    def facebook
+      # You need to implement the method below in your model
+      @user = User.find_for_facebook_oauth(request.env["omniauth.auth"], current_user)  
+
+      if @user.persisted?
+        flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
+        sign_in_and_redirect @user, :event => :authentication
+      else
+        session["devise.facebook_data"] = request.env["omniauth.auth"]
+        redirect_to new_user_registration_url
+      end
+    end  
+
+    def google_oauth2
+        # You need to implement the method below in your model (e.g. app/models/user.rb)
+        @user = User.find_for_google_oauth2(request.env["omniauth.auth"], current_user)  
+
+        if @user.persisted?
+          flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Google"
+          sign_in_and_redirect @user, :event => :authentication
+        else
+          session["devise.google_data"] = request.env["omniauth.auth"]
+          redirect_to new_user_registration_url
+        end
+    end
+  end
+
+たぶんこれでオッケー。
+その他、deviseでの登録でもnameを登録できるように、views/registrations/new.html.erbに追記。
+
+  <div><%= f.label :name %><br />
+  <%= f.text_field :name %></div>
+
+ほか、headerに表示されるemailを名前に変更。
+まあこれは簡単だろうから省略。
+長い道のりだった。
+
+= public_activityでフォローしているユーザーのアクティビティのみ表示
+まずviews/activities/index.html.erbを編集。
+
+  <h1>Activities#index</h1>
+    <% @activities.each do |activity| %>
+        <% if activity.trackable_type == "Item" %>
+          <% if activity.owner==current_user %>
+           <div class="activity">
+            You made <%= link_to activity.trackable.title, activity.trackable %>
+           </div>
+          <% elsif @following.include?(activity.owner) %>
+           <div class="activity">
+            <%= activity.owner.name %> made <%= link_to activity.trackable.title, activity.trackable %>
+           </div>
+          <% else %>
+          <% end %>
+        <% else %>
+          <% if activity.owner == current_user %>
+          <div class="activity">
+            You added comment to 
+            <%= link_to activity.trackable.item.title, activity.trackable.item %> 
+            </div>
+          <% elsif @following.include?(activity.owner) %>
+           <div class="activity">
+            <%= activity.owner.name %>
+             added comment to 
+            <%= link_to activity.trackable.item.title, activity.trackable.item %><br />
+           </div>
+          <% else %>
+          <% end %>
+        <% end %>
+    <% end %>
+
+そのあと、activities_controller.rbに追記。
+
+  @following = current_user.following
+
+これでよし。

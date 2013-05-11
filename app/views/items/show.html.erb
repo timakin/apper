@@ -2,7 +2,7 @@
 
 <p>
   <b>User_id:</b>
-  <%= @item.user_id %>
+  <%= @item.user.name %>
 </p>
 <% unless current_user==@item.user %>
       <% if current_user.following?(@item.user) %>
@@ -30,7 +30,7 @@
 
 <p>
   <% @following.each do |f| %>
-  <b><%= f.email %></b><br />
+  <b><%= f.name %></b><br />
   <% end %>
 </p>
 

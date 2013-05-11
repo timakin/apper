@@ -56,6 +56,7 @@ gem 'mini_magick'
 gem 'omniauth'
 gem "omniauth-facebook"
 gem "omniauth-twitter"
+gem 'omniauth-google-oauth2'
 gem 'devise'
 gem 'acts_as_commentable'
 gem 'acts-as-taggable-on'

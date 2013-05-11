@@ -22,7 +22,7 @@
   <tr>
     <td><%= link_to item.title, item %></td>
     <td><%= item.text %></td>
-    <td><%= item.user.email %></td>
+    <td><%= item.user.name %></td>
     <td><%= link_to image_tag(item.image_url(:thumb)), item %></td>
     <!--
     <td><%= raw item.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></td>

@@ -215,6 +215,14 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
+  OpenSSL::SSL.module_eval{ remove_const(:VERIFY_PEER) }
+  OpenSSL::SSL.const_set( :VERIFY_PEER, OpenSSL::SSL::VERIFY_NONE )
+  config.omniauth :facebook, "508373295894217", "cef78ea895dd30aef885c21cd1168673",
+      {:scope => 'email, offline_access'} 
+  require "omniauth-facebook"
+  require "omniauth-google-oauth2"
+  config.omniauth :google_oauth2, "477050153858", "BeClghfv7QEDXdNPrfn8lm2A", { access_type: "offline", approval_prompt: "" }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
