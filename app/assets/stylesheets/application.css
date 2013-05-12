@@ -8,9 +8,9 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require bootstrap
  *= require_self
  *= require_tree .
- *= require bootstrap
  */
 
 
@@ -18,11 +18,27 @@
 	width:1024px;
 	margin-left: auto;
 	margin-right: auto;
+    padding:10px;
 }
 
 .wrapper{
-	margin-top:50px;
+	margin-top:100px;
 	width:1024px;
 	margin-right:auto;
 	margin-left:auto;
+}
+
+.navbar-inner{
+    vertical-align: middle;
+    background : none;
+    background-color: white;
+}
+
+form.form-search#item{
+    padding: 5px;
+    margin: 0px;
+}
+
+button.btn#item-search {
+margin-top: 0px;
 }

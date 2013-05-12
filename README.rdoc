@@ -583,3 +583,84 @@ omniauth用のカラムをUserモデルに追加する。
   end
 
 これでオッケーヾ(๑╹◡╹)ﾉ"
+
+= サムネイルを綺麗に表示 & ヘッダー少し大きめ
+
+そろそろhtmlやらなんやら綺麗にする。
+home/_header.html.erbの項目を少し減らす。それでformやらなんやらも追加する。
+
+  <li><form class="form-search" id="item">
+    <input type="text" class="input-medium search-query" /> 
+    <button type="submit" class="btn" id="item-search">Search</button>
+    </form>
+  </li>
+
+そのあと、bootstrapを読み込んだあとにapplication.cssを読み込むようにする。
+
+  *= require bootstrap
+  *= require_self
+  *= require_tree .
+
+このようにapplication.cssの記述の順番を変更。そうすると最後に読み込まれるapplicaiton.cssの方が優先される。
+cssはヘッダーの大きさやら背景やら、formの調整やらで次のようになった。
+
+  #header{
+    width:1024px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+  }  
+
+  .wrapper{
+    margin-top:100px;
+    width:1024px;
+    margin-right:auto;
+    margin-left:auto;
+  }  
+
+  .navbar-inner{
+    vertical-align: middle;
+    background : none;
+    background-color: white;
+  }  
+
+  form.form-search#item{
+    padding: 5px;
+    margin: 0px;
+  }  
+
+  button.btn#item-search {
+    margin-top: 0px;
+  }
+
+
+次にapp/uploaders/image_uploader.rbを次のように書き換える
+
+  version :thumb do
+     process :resize_to_fill => [280, 120]
+  end
+
+表示するviewを新たに作る。views/items/_thumb.html.erbを新たに作り、
+パーシャルを呼び出すようにitems/index.html.erbも書き換える。
+ここには_thumbの記述だけのこす。
+
+  <ul class="thumbnails">
+　  <% @items.each do |item| %>
+      <li class="span4">
+      <div class="thumbnail">
+        <%= link_to image_tag(item.image_url(:thumb)), item %>
+        <div class="caption">
+          <%= item.user.name %>
+          <h3><%= link_to item.title, item %></h3>
+          <p><%= item.text %></p>
+          <p>
+            <a class="btn btn-primary" href="#">Action</a>
+            <a class="btn" href="#">Action</a>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </ul>
+
+最後に元々テーブルで表示していたindex.html.erbの記述を消去。
+まだ改良の余地はある。
