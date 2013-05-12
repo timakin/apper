@@ -50,6 +50,9 @@ group :development do
   gem 'binding_of_caller'
   gem 'sextant'
   gem 'quiet_assets'
+  gem 'hirb'
+  gem 'hirb-unicode'
+  gem 'pry-doc'
 end
 
 gem 'carrierwave'
