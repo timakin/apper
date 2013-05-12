@@ -52,7 +52,7 @@ group :development do
   gem 'quiet_assets'
   gem 'hirb'
   gem 'hirb-unicode'
-  gem 'pry-doc'
+#  gem 'pry-doc'
 end
 
 gem 'carrierwave'

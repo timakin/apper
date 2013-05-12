@@ -135,9 +135,6 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
-    pry-doc (0.4.5)
-      pry (>= 0.9)
-      yard (>= 0.8)
     pry-rails (0.2.2)
       pry (>= 0.9.10)
     public_activity (1.0.3)
@@ -231,7 +228,6 @@ GEM
     unicode-display_width (0.1.1)
     warden (1.2.1)
       rack (>= 1.0)
-    yard (0.8.6.1)
     zurui-sass-rails (0.0.2)
       railties (>= 3.1)
 
@@ -263,7 +259,6 @@ DEPENDENCIES
   omniauth-twitter
   party_boy
   pg
-  pry-doc
   pry-rails
   public_activity
   quiet_assets
